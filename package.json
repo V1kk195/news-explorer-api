@@ -1,0 +1,17 @@
+{
+  "name": "news-explorer-api",
+  "version": "1.0.0",
+  "description": "study project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon --inspect app.js"
+  },
+  "author": "Victoria Fedotkina",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0"
+  }
+}
