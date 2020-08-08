@@ -14,14 +14,14 @@ const userSchema = mongoose.Schema({
   password: {
     type: mongoose.Schema.Types.String,
     required: [true, 'Нужно ввести пароль!'],
-    select: false
+    select: false,
   },
   name: {
     type: mongoose.Schema.Types.String,
     required: true,
     minlength: 2,
     maxlength: 30,
-  }
-})
+  },
+});
 
 module.exports = mongoose.model('user', userSchema);

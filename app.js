@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 const users = require('./routes/users');
 const articles = require('./routes/articles');
+const { createUser } = require('./controllers/users');
 const NotFoundError = require('./errors/not-found-error');
 
 const { PORT = 3000 } = process.env;
@@ -18,6 +20,8 @@ mongoose.connect('mongodb://localhost:27017/news-explorer', {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/signup', createUser);
 
 app.use('/', users);
 app.use('/', articles);
