@@ -6,7 +6,7 @@ require('dotenv').config();
 const users = require('./routes/users');
 const articles = require('./routes/articles');
 const auth = require('./middlewares/auth');
-const { createUser } = require('./controllers/users');
+const { createUser, login } = require('./controllers/users');
 const NotFoundError = require('./errors/not-found-error');
 
 const { PORT = 3000 } = process.env;
@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/signup', createUser);
+app.post('/signin', login);
 
 app.use(auth);
 
