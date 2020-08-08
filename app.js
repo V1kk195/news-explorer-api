@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const users = require('./routes/users');
 const articles = require('./routes/articles');
+const NotFoundError = require('./errors/not-found-error');
 
 const { PORT = 3000 } = process.env;
 
