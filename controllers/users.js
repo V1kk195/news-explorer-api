@@ -42,3 +42,13 @@ module.exports.createUser = (req, res, next) => {
       return next(err);
     });
 };
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return Users.findUserByCredentials(email, password)
+    .then((user) => {
+      res.send({ data: user });
+    })
+    .catch((err) => next(err));
+};
