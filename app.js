@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const users = require('./routes/users');
+const articles = require('./routes/articles');
+
 const { PORT = 3000 } = process.env;
 
 const app = express();
@@ -14,6 +17,12 @@ mongoose.connect('mongodb://localhost:27017/news-explorer', {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/', users);
+app.use('/', articles);
+app.all('*', (req, res, next) => {
+  next(new NotFoundError('Запрашиваемый ресурс не найден'));
+});
 
 // noinspection JSUnusedLocalSymbols
 app.use((err, req, res, next) => {
