@@ -1,5 +1,9 @@
 const Articles = require('../models/articles');
 
+const BadRequestError = require('../errors/bad-request-error');
+const ForbiddenError = require('../errors/forbidden-error');
+const NotFoundError = require('../errors/not-found-error');
+
 module.exports.getArticles = (req, res, next) => {
   Articles.find({})
     .then((articles) => {
@@ -18,17 +22,28 @@ module.exports.createArticle = (req, res, next) => {
     .then((article) => {
       res.send({ data: article });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError(err.message));
+      }
+      return next(err);
+    });
 };
 
 module.exports.deleteArticle = (req, res, next) => {
   Articles.findById(req.params.articleId)
-    .orFail()
+    .orFail(new NotFoundError(`Карточка ${req.params.articleId} не существует`))
     .then((article) => {
       if (!article.owner.equals(req.user._id)) {
-        return Promise.reject(new ForbiddenError('Вы пытаетесь удалить чужую статью'));
+        throw new ForbiddenError('Вы пытаетесь удалить чужую статью');
       }
       return Articles.deleteOne(article);
     })
-    .catch(next);
+    .then(() => res.send({ message: `Статья ${req.params.articleId} удалена` }))
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError(`Неправильный формат ID карточки ${req.params.articleId}`));
+      }
+      return next(err);
+    });
 };
