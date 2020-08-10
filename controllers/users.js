@@ -16,7 +16,7 @@ module.exports.getUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(`Неправильный формат ID юзера ${req.params.id}`));
+        next(new BadRequestError(`Неправильный формат ID юзера ${req.user._id}`));
       }
       return next(err);
     });
@@ -73,5 +73,5 @@ module.exports.login = (req, res, next) => {
         })
         .end();
     })
-    .catch((err) => next(err));
+    .catch(next);
 };
