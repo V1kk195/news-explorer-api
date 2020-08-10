@@ -6,13 +6,20 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const BadRequestError = require('../errors/bad-request-error');
 const ConflictError = require('../errors/conflict-error');
+const NotFoundError = require('../errors/not-found-error');
 
 module.exports.getUser = (req, res, next) => {
   Users.findById(req.user._id)
+    .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => {
       res.send({ data: user });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError(`Неправильный формат ID юзера ${req.params.id}`));
+      }
+      return next(err);
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -58,7 +65,13 @@ module.exports.login = (req, res, next) => {
         { expiresIn: 3600 * 24 * 7 },
       );
 
-      res.send({ token });
+      res
+        .cookie('jwt', token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+          sameSite: true,
+        })
+        .end();
     })
     .catch((err) => next(err));
 };
