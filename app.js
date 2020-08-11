@@ -30,8 +30,8 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.post('/signup', validateUserAuth, createUser);
+app.post('/signin', validateCreateUser, login);
 
 app.use(auth);
 
