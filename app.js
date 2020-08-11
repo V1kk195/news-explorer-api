@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const { errors } = require('celebrate');
 
 const users = require('./routes/users');
 const articles = require('./routes/articles');
@@ -10,6 +11,7 @@ const auth = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/users');
 const NotFoundError = require('./errors/not-found-error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { validateUserAuth, validateCreateUser } = require('./middlewares/validation');
 
 const { PORT = 3000 } = process.env;
 
@@ -40,6 +42,8 @@ app.all('*', (req, res, next) => {
 });
 
 app.use(errorLogger);
+
+app.use(errors());
 
 // noinspection JSUnusedLocalSymbols
 app.use((err, req, res, next) => {
