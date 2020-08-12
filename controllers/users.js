@@ -12,7 +12,12 @@ module.exports.getUser = (req, res, next) => {
   Users.findById(req.user._id)
     .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => {
-      res.send({ data: user });
+      res.send({
+        data: {
+          email: user.email,
+          name: user.name,
+        },
+      });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
