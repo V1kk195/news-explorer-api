@@ -35,9 +35,9 @@ const validateCreateArticle = celebrate({
   }),
 });
 
-const validateParamsCardId = celebrate({
+const validateParamsArticleId = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().hex().length(24),
+    articleId: Joi.string().hex().length(24),
   }),
 });
 
@@ -45,5 +45,5 @@ module.exports = {
   validateUserAuth,
   validateCreateUser,
   validateCreateArticle,
-  validateParamsCardId,
+  validateParamsArticleId,
 };
