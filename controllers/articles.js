@@ -23,7 +23,7 @@ module.exports.createArticle = (req, res, next) => {
     keyword, title, text, date, source, link, image, owner: req.user._id,
   })
     .then((article) => {
-      res.send({ data: article });
+      res.status(201).send({ data: article });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
