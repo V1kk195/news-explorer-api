@@ -1,3 +1,5 @@
+const JWT_DEV = 'dev-secret';
+
 const rateLimit = require('express-rate-limit');
 
 const limiter = rateLimit({
@@ -5,4 +7,10 @@ const limiter = rateLimit({
   max: 100,
 });
 
-module.exports = limiter;
+const mongoAddress = 'mongodb://localhost:27017/news-explorer';
+
+module.exports = {
+  JWT_DEV,
+  limiter,
+  mongoAddress,
+};
