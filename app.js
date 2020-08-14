@@ -9,6 +9,7 @@ const helmet = require('helmet');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routes = require('./routes/index');
 const limiter = require('./config');
+const errorHandler = require('./middlewares/error-handler');
 
 const { PORT = 3000 } = process.env;
 
@@ -29,17 +30,6 @@ app.use(requestLogger);
 app.use(routes);
 app.use(errorLogger);
 app.use(errors());
-
-// noinspection JSUnusedLocalSymbols
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
-});
+app.use(errorHandler);
 
 app.listen(PORT);
