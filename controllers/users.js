@@ -7,10 +7,13 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const BadRequestError = require('../errors/bad-request-error');
 const ConflictError = require('../errors/conflict-error');
 const NotFoundError = require('../errors/not-found-error');
+const {
+  userNotFoundMsg, incorrectObjIdMsg, existingUserMsg, existingEmailErrCode,
+} = require('../constants');
 
 module.exports.getUser = (req, res, next) => {
   Users.findById(req.user._id)
-    .orFail(new NotFoundError('Пользователь не найден'))
+    .orFail(new NotFoundError(userNotFoundMsg))
     .then((user) => {
       res.send({
         data: {
@@ -21,7 +24,7 @@ module.exports.getUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(`Неправильный формат ID юзера ${req.user._id}`));
+        next(new BadRequestError(incorrectObjIdMsg));
       }
       return next(err);
     });
@@ -48,8 +51,8 @@ module.exports.createUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message));
       }
-      if (err.name === 'MongoError' && err.code === 11000) {
-        next(new ConflictError(`Пользователь ${email} уже существует`));
+      if (err.name === 'MongoError' && err.code === existingEmailErrCode) {
+        next(new ConflictError(existingUserMsg(email)));
       }
       return next(err);
     });
