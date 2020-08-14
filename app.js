@@ -5,13 +5,8 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const { errors } = require('celebrate');
 
-const users = require('./routes/users');
-const articles = require('./routes/articles');
-const auth = require('./middlewares/auth');
-const { createUser, login } = require('./controllers/users');
-const NotFoundError = require('./errors/not-found-error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { validateUserAuth, validateCreateUser } = require('./middlewares/validation');
+const routes = require('./routes/index');
 
 const { PORT = 3000 } = process.env;
 
@@ -30,16 +25,7 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.post('/signup', validateCreateUser, createUser);
-app.post('/signin', validateUserAuth, login);
-
-app.use(auth);
-
-app.use('/', users);
-app.use('/', articles);
-app.all('*', (req, res, next) => {
-  next(new NotFoundError('Запрашиваемый ресурс не найден'));
-});
+app.use(routes);
 
 app.use(errorLogger);
 
