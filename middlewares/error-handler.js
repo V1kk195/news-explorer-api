@@ -1,4 +1,3 @@
-// noinspection JSUnusedLocalSymbols
 const errorHandler = (err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res
@@ -8,6 +7,7 @@ const errorHandler = (err, req, res, next) => {
         ? 'На сервере произошла ошибка'
         : message,
     });
+  next();
 };
 
 module.exports = errorHandler;
