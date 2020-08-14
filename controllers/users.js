@@ -30,10 +30,6 @@ module.exports.getUser = (req, res, next) => {
 module.exports.createUser = (req, res, next) => {
   const { email, password, name } = req.body;
 
-  if (!password || !password.trim()) {
-    throw new BadRequestError('Нужно ввести пароль');
-  }
-
   return bcrypt.hash(password, 10)
     .then((hash) => Users.create({
       email,
