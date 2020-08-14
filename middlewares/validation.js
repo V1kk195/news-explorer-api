@@ -1,11 +1,13 @@
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
 
+const { incorrectUrlMsg } = require('../constants');
+
 const validateUrl = (value, helpers) => {
   if (validator.isURL(value)) {
     return value;
   }
-  return helpers.message('Введите корректный URL');
+  return helpers.message(incorrectUrlMsg);
 };
 
 const validateUserAuth = celebrate({

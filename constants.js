@@ -7,6 +7,9 @@ const unauthorisedArticleDeleteMsg = 'Вы пытаетесь удалить ч�
 const successArticleDeleteMsg = 'Статья успешно удалена';
 const emptyPasswordMsg = 'Введите пароль';
 const emptyEmailMsg = 'Введите email';
+const authNeededMsg = 'Необходима авторизация';
+const serverErrorMsg = 'На сервере произошла ошибка';
+const incorrectUrlMsg = 'Введите корректный URL';
 
 const existingEmailErrCode = 11000;
 
@@ -21,4 +24,7 @@ module.exports = {
   successArticleDeleteMsg,
   emptyPasswordMsg,
   emptyEmailMsg,
+  authNeededMsg,
+  serverErrorMsg,
+  incorrectUrlMsg,
 };
