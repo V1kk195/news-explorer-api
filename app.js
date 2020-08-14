@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const { errors } = require('celebrate');
+const helmet = require('helmet');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routes = require('./routes/index');
@@ -18,17 +19,13 @@ mongoose.connect('mongodb://localhost:27017/news-explorer', {
   useFindAndModify: false,
 });
 
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(cookieParser());
-
 app.use(requestLogger);
-
 app.use(routes);
-
 app.use(errorLogger);
-
 app.use(errors());
 
 // noinspection JSUnusedLocalSymbols
