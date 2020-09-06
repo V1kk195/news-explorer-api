@@ -13,19 +13,20 @@ const { limiter, mongoAddress } = require('./config');
 const errorHandler = require('./middlewares/error-handler');
 
 const whitelist = [
-  'http://localhost:8080/', 'https://api.explorerofnews.ga', 'http://api.explorerofnews.ga', 'https://explorerofnews.ga',
+  'http://localhost:8080', 'https://api.explorerofnews.ga', 'http://api.explorerofnews.ga', 'https://explorerofnews.ga',
   'http://explorerofnews.ga',
 ];
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (whitelist.includes(origin) || !origin) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
+  methods: ['GET', 'PUT', 'POST', 'DELETE'],
 };
 
 const { PORT = 3000 } = process.env;
