@@ -41,7 +41,7 @@ module.exports.createUser = (req, res, next) => {
       name,
     }))
     .then((user) => {
-      res.send({
+      res.status(201).send({
         data: {
           email: user.email,
           name: user.name,
@@ -75,6 +75,12 @@ module.exports.login = (req, res, next) => {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
           sameSite: true,
+        })
+        .send({
+          data: {
+            email: user.email,
+            name: user.name,
+          },
         })
         .end();
     })
