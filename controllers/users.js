@@ -17,7 +17,9 @@ module.exports.getUser = (req, res, next) => {
     .orFail(new NotFoundError(userNotFoundMsg))
     .then((user) => {
       res
-        .header('Cache-Control", "no-cache, no-store, must-revalidate')
+        .set({
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+        })
         .send({
           data: {
             email: user.email,
