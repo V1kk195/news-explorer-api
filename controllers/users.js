@@ -16,12 +16,14 @@ module.exports.getUser = (req, res, next) => {
   Users.findById(req.user._id)
     .orFail(new NotFoundError(userNotFoundMsg))
     .then((user) => {
-      res.send({
-        data: {
-          email: user.email,
-          name: user.name,
-        },
-      });
+      res
+        .header('Cache-Control", "no-cache, no-store, must-revalidate')
+        .send({
+          data: {
+            email: user.email,
+            name: user.name,
+          },
+        });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -75,6 +77,7 @@ module.exports.login = (req, res, next) => {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
           sameSite: 'None',
+          secure: true,
           // sameSite: true,
         })
         .send({
