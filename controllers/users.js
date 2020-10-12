@@ -92,3 +92,12 @@ module.exports.login = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.logout = (req, res) => res
+  .cookie('jwt', '', {
+    maxAge: -1,
+  })
+  .send({
+    data: 'logged out',
+  })
+  .end();
