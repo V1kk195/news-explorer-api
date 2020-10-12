@@ -94,8 +94,11 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.logout = (req, res) => res
-  .cookie('jwt', '', {
+  .clearCookie('jwt', {
     maxAge: -1,
+    httpOnly: true,
+    sameSite: 'None',
+    secure: true,
   })
   .send({
     data: 'logged out',
