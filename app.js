@@ -14,7 +14,7 @@ const errorHandler = require('./middlewares/error-handler');
 
 const whitelist = [
   'http://localhost:8080', 'https://api.explorerofnews.ga', 'http://api.explorerofnews.ga', 'https://explorerofnews.ga',
-  'http://explorerofnews.ga',
+  'http://explorerofnews.ga', 'https://victoria31f.github.io',
 ];
 
 const corsOptions = {
